@@ -31,7 +31,7 @@ hr {
 }
 
 .social {
-    width: 30px;
+    width: 2%;
 }
 
 .contact-me {
@@ -140,7 +140,8 @@ a:hover {
 }
 
 .quote {
-    font-size: 23px;
+    font-size: 1.3rem;
+
     font-family: 'Kalam', cursive;
 }
 
