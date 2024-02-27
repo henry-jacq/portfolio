@@ -4,15 +4,18 @@ module.exports = {
     content: ["./src/**/*.{html,js}", "./index.html", "./src/input.css"],
     theme: {
         fontFamily: {
-            montserrat: ['Montserrat', 'sans-serif'],
+            sans: ['Open Sans', 'sans-serif'],
             inter: ['Inter', 'sans-serif'],
-            primary: ['Open Sans', 'sans-serif']
+            montserrat: ['Montserrat', 'sans-serif']
         },
         extend: {
             colors: {
-                'primary': '#0872BF',
-                'background': '#141A1A'
+                primary: "#0872BF",
+                background: "#141A1A"
             },
+            dropShadow: {
+                '3xl': '0 4px 20px rgba(93, 173, 236, 0.23)',
+            }
         },
     },
     plugins: [],
