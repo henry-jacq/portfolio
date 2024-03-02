@@ -4,14 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="./output.css" rel="stylesheet">
     <title>Henry's Portfolio</title>
+    <link href="./output.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
-<body>
-    <h1 class="text-3xl p-3">
-        Hello Henry!
-    </h1>
+<body class="bg-background">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 md:py-1 transition-all duration-300">
+        <nav class="max-w-7xl mx-auto bg-gray-800 md:bg-transparent p-5">
+            <div class="flex items-center justify-between">
+                <a href="/" class="text-white font-bold text-lg flex items-center gap-3">My Portfolio</a>
+
+                <!-- For larger devices -->
+                <div class="hidden md:flex space-x-10">
+                    <a href="#home" class="text-primary hover:text-gray-300">Home</a>
+                    <a href="#skills" class="text-white hover:text-gray-300">Skills</a>
+                    <a href="#projects" class="text-white hover:text-gray-300">Projects</a>
+                    <a href="#contact" class="text-white hover:text-gray-300">Contact Me</a>
+                </div>
+
+                <!-- Menu Buttons -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white text-2xl">
+                        <i class="bx bx-menu"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile View -->
+            <div id="mobile-menu" class="hidden md:hidden">
+                <a href="#home" class="block text-white py-2 mt-3 hover:bg-gray-700">Home</a>
+                <a href="#skills" class="block text-white py-2 hover:bg-gray-700">Skills</a>
+                <a href="#projects" class="block text-white py-2 hover:bg-gray-700">Projects</a>
+                <a href="#contact" class="block text-white py-2 hover:bg-gray-700">Contact Me</a>
+            </div>
+        </nav>
+    </header>
 </body>
 
 </html>
