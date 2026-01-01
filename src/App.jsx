@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
-  Menu, X, Github, Linkedin, Mail, Phone, MapPin,
+  Menu, X, Github, Linkedin, Mail,
   ChevronRight, Sparkles
 } from 'lucide-react';
 
@@ -8,9 +9,9 @@ import {
 const injectSEO = () => {
   document.title = 'Henry J M | Backend Developer & ML Engineer';
   [
-    { name: 'description', content: 'Backend Developer & ML Engineer building secure, scalable systems and AI-driven products.' },
+    { name: 'description', content: 'Backend Developer & ML Engineer building secure, scalable systems and applied ML.' },
     { property: 'og:title', content: 'Henry J M | Backend & ML Engineer' },
-    { property: 'og:description', content: 'Portfolio of backend systems, ML projects, and real-world engineering.' },
+    { property: 'og:description', content: 'Portfolio of backend systems, workflows, and ML projects.' },
     { property: 'og:type', content: 'website' }
   ].forEach(t => {
     const m = document.createElement('meta');
@@ -19,29 +20,53 @@ const injectSEO = () => {
   });
 };
 
-/* ===================== Reveal Hook ===================== */
-const useReveal = () => {
-  const [v, setV] = useState({});
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      entries =>
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            setV(s => ({ ...s, [e.target.id]: true }));
-            io.unobserve(e.target);
-          }
-        }),
-      { threshold: 0.15 }
-    );
-    document.querySelectorAll('[data-section]').forEach(el => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-  return v;
+/* ===================== MOTION ===================== */
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+  }
 };
+
+const stagger = {
+  visible: {
+    transition: { staggerChildren: 0.12 }
+  }
+};
+
+/* ===================== COMPONENTS ===================== */
+const Section = ({ id, className = '', children }) => (
+  <motion.section
+    id={id}
+    variants={stagger}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: '-100px' }}
+    className={`py-28 px-6 ${className}`}
+  >
+    {children}
+  </motion.section>
+);
+
+const MagneticButton = ({ children, onClick, primary }) => (
+  <motion.button
+    whileHover={{ scale: 1.06 }}
+    whileTap={{ scale: 0.96 }}
+    onClick={onClick}
+    className={`px-8 py-4 rounded-xl font-medium transition
+      ${primary
+        ? 'bg-[#6366F1] text-white'
+        : 'border border-white/10 hover:bg-white/5'}
+    `}
+  >
+    {children}
+  </motion.button>
+);
 
 /* ===================== MAIN ===================== */
 const Portfolio = () => {
-  const visible = useReveal();
   const [menu, setMenu] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const raf = useRef(null);
@@ -62,13 +87,10 @@ const Portfolio = () => {
   const scrollTo = id =>
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
-  const sectionClass = id =>
-    `py-28 px-6 transition-all duration-700 ease-out ${visible[id] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-    }`;
-
   return (
-    <div className="bg-[#0B0F1A] text-[#E5E7EB]">
-      {/* Cursor glow */}
+    <div className="bg-[#0B0F1A] text-[#E5E7EB] relative overflow-hidden">
+
+      {/* Cursor Glow */}
       <div
         className="fixed inset-0 z-30 pointer-events-none"
         style={{
@@ -81,7 +103,7 @@ const Portfolio = () => {
         <div className="flex items-center justify-between h-20 px-6 mx-auto max-w-7xl">
           <span className="font-semibold tracking-wide">Henry J M</span>
           <div className="hidden md:flex gap-8 text-sm text-[#9CA3AF]">
-            {['home', 'about', 'experience', 'projects', 'skills', 'contact'].map(i => (
+            {['home','about','experience','projects','skills','contact'].map(i => (
               <button key={i} onClick={() => scrollTo(i)} className="hover:text-white">
                 {i.toUpperCase()}
               </button>
@@ -94,109 +116,161 @@ const Portfolio = () => {
       </nav>
 
       {/* HERO */}
-      <section id="home" className="flex items-center justify-center min-h-screen pt-24 text-center">
-        <div>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-[#9CA3AF]">
-            <Sparkles size={14} /> Backend Developer & ML Engineer
-          </span>
-          <h1 className="mt-8 text-5xl font-semibold tracking-tight md:text-7xl">
-            Building <span className="text-[#6366F1]">Reliable Systems</span><br />
+      <section id="home" className="relative flex items-center justify-center min-h-screen pt-24 text-center">
+        <motion.div
+          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[#6366F1]/20 blur-3xl"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <div className="relative">
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-[#9CA3AF]"
+          >
+            <Sparkles size={14}/> Backend Developer & ML Engineer
+          </motion.span>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 text-5xl font-semibold tracking-tight md:text-7xl"
+          >
+            Building <span className="text-[#6366F1]">Reliable Systems</span><br/>
             with Intelligence
-          </h1>
-          <p className="mt-6 max-w-xl mx-auto text-[#9CA3AF]">
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mt-6 max-w-xl mx-auto text-[#9CA3AF]"
+          >
             I design backend systems and applied ML solutions that scale cleanly,
             stay secure, and solve real problems.
-          </p>
+          </motion.p>
+
           <div className="flex justify-center gap-4 mt-10">
-            <button onClick={() => scrollTo('contact')}
-              className="px-8 py-4 rounded-xl bg-[#6366F1] text-white font-medium hover:opacity-90">
+            <MagneticButton primary onClick={() => scrollTo('contact')}>
               Contact Me
-            </button>
-            <button onClick={() => scrollTo('projects')}
-              className="px-8 py-4 rounded-xl border border-white/10 text-[#E5E7EB] hover:bg-white/5">
+            </MagneticButton>
+            <MagneticButton onClick={() => scrollTo('projects')}>
               View Work
-            </button>
+            </MagneticButton>
           </div>
         </div>
       </section>
 
       {/* ABOUT */}
-      <section id="about" data-section className={sectionClass('about')}>
+      <Section id="about">
         <div className="max-w-4xl mx-auto">
-          <h2 className="mb-6 text-3xl font-semibold">About</h2>
-          <p className="text-[#9CA3AF] leading-relaxed">
-            I’m currently pursuing Information Technology and working deeply in backend
-            engineering, workflow systems, and applied ML. I enjoy building systems
-            that are understandable, maintainable, and secure by design.
-          </p>
+          <motion.h2 variants={fadeUp} className="mb-6 text-3xl font-semibold">
+            About
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-[#9CA3AF] leading-relaxed">
+            I’m pursuing Information Technology and working deeply in backend
+            engineering, workflow systems, and applied ML. I focus on clarity,
+            security, and long-term maintainability.
+          </motion.p>
         </div>
-      </section>
+      </Section>
 
       {/* EXPERIENCE */}
-      <section id="experience" data-section className={`bg-[#111827] ${sectionClass('experience')}`}>
+      <Section id="experience" className="bg-[#111827]">
         <div className="max-w-4xl mx-auto">
-          <h2 className="mb-8 text-3xl font-semibold">Experience</h2>
-          <div className="p-8 border border-white/10 rounded-2xl bg-white/5">
-            <h3 className="text-xl font-medium">
-              SDE Intern — NIT Tiruchirappalli
-            </h3>
-            <ul className="mt-4 space-y-2 text-[#9CA3AF]">
-              <li className="flex gap-2"><ChevronRight size={16} /> Built NPFS for 600+ users</li>
-              <li className="flex gap-2"><ChevronRight size={16} /> Dynamic RBAC + workflows</li>
-              <li className="flex gap-2"><ChevronRight size={16} /> Secure backend APIs</li>
-            </ul>
+          <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+            Experience
+          </motion.h2>
+
+          <div className="relative pl-8 border-l border-white/10">
+            <motion.div variants={fadeUp}>
+              <span className="absolute -left-[7px] top-2 w-3 h-3 rounded-full bg-[#6366F1]" />
+              <h3 className="text-xl font-medium">
+                SDE Intern — NIT Tiruchirappalli
+              </h3>
+              <ul className="mt-4 space-y-2 text-[#9CA3AF]">
+                <li className="flex gap-2"><ChevronRight size={16}/> NPFS for 600+ users</li>
+                <li className="flex gap-2"><ChevronRight size={16}/> Dynamic RBAC & workflows</li>
+                <li className="flex gap-2"><ChevronRight size={16}/> Secure backend APIs</li>
+              </ul>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* PROJECTS */}
-      <section id="projects" data-section className={sectionClass('projects')}>
+      <Section id="projects">
         <div className="max-w-6xl mx-auto">
-          <h2 className="mb-10 text-3xl font-semibold">Projects</h2>
+          <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+            Projects
+          </motion.h2>
+
           <div className="grid gap-6 md:grid-cols-2">
             {[
-              ['Digital Outpass System', 'Production-ready institutional workflow system'],
-              ['DDoS Detection (ML)', 'GNN-based detection pipeline with live agents'],
-              ['Satellite Image Captioning', 'Fine-tuned vision-language models'],
-              ['Personal Journal Manager', 'Private, distraction-free journaling app']
-            ].map(p => (
-              <div key={p[0]}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#6366F1]/40 transition">
-                <h3 className="font-medium">{p[0]}</h3>
-                <p className="mt-2 text-sm text-[#9CA3AF]">{p[1]}</p>
-              </div>
+              ['Digital Outpass System', 'Institution-scale approval workflow platform'],
+              ['DDoS Detection (ML)', 'GNN-based traffic analysis with agents'],
+              ['Satellite Image Captioning', 'Vision-language model fine-tuning'],
+              ['Journal Manager', 'Private & minimal journaling app']
+            ].map(([title, desc]) => (
+              <motion.div
+                key={title}
+                variants={fadeUp}
+                whileHover={{ y: -6 }}
+                className="relative p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#6366F1]/40"
+              >
+                <div className="absolute inset-0 rounded-2xl opacity-0 hover:opacity-100 transition bg-gradient-to-br from-[#6366F1]/10 to-transparent"/>
+                <h3 className="font-medium">{title}</h3>
+                <p className="mt-2 text-sm text-[#9CA3AF]">{desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* SKILLS */}
-      <section id="skills" data-section className={`bg-[#111827] ${sectionClass('skills')}`}>
+      <Section id="skills" className="bg-[#111827]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="mb-10 text-3xl font-semibold">Skills</h2>
-          <div className="grid md:grid-cols-4 gap-6 text-sm text-[#9CA3AF]">
-            {['Python, Java, C++', 'React, FastAPI, Flask', 'ML, PyTorch, Pandas', 'Linux, Git, Docker']
-              .map(s => (
-                <div key={s} className="p-6 border rounded-2xl bg-white/5 border-white/10">
-                  {s}
-                </div>
-              ))}
+          <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+            Skills
+          </motion.h2>
+
+          <div className="flex flex-wrap gap-4">
+            {[
+              'Python', 'Java', 'C++',
+              'React', 'FastAPI', 'Flask',
+              'Machine Learning', 'PyTorch',
+              'Linux', 'Docker', 'Git'
+            ].map(s => (
+              <motion.div
+                key={s}
+                variants={fadeUp}
+                whileHover={{ scale: 1.05 }}
+                className="px-5 py-3 rounded-full bg-white/5 border border-white/10 text-sm text-[#9CA3AF]"
+              >
+                {s}
+              </motion.div>
+            ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* CONTACT */}
-      <section id="contact" data-section className={sectionClass('contact')}>
+      <Section id="contact">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="mb-4 text-3xl font-semibold">Contact</h2>
-          <p className="text-[#9CA3AF]">henryjm@example.com · Chennai, India</p>
-          <div className="flex justify-center gap-6 mt-6">
-            <a href="#" className="hover:text-[#6366F1]"><Github /></a>
-            <a href="#" className="hover:text-[#6366F1]"><Linkedin /></a>
-            <a href="#" className="hover:text-[#6366F1]"><Mail /></a>
-          </div>
+          <motion.h2 variants={fadeUp} className="mb-4 text-3xl font-semibold">
+            Contact
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-[#9CA3AF]">
+            henryjm@example.com · Chennai, India
+          </motion.p>
+          <motion.div variants={fadeUp} className="flex justify-center gap-6 mt-6">
+            <a className="hover:text-[#6366F1]"><Github /></a>
+            <a className="hover:text-[#6366F1]"><Linkedin /></a>
+            <a className="hover:text-[#6366F1]"><Mail /></a>
+          </motion.div>
         </div>
-      </section>
+      </Section>
 
       {/* FOOTER */}
       <footer className="py-8 text-center text-sm text-[#9CA3AF] border-t border-white/5">
