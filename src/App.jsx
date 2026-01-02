@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, ExternalLink } from "lucide-react";
-import { SiGithub, SiLinkedin, SiMaildotru } from "react-icons/si";
+import { Menu, X } from "lucide-react";
+import { SiUpwork, SiGithub, SiLinkedin, SiMaildotru, SiX } from "react-icons/si";
+
+import TimelineItem from "./components/TimelineItem";
+import TimelineLine from "./components/TimelineLine";
+import ProjectCard from "./components/ProjectCard";
 
 import { PROFILE } from "./config/profile";
 import { PROJECTS } from "./data/projects";
@@ -36,18 +40,20 @@ const Section = ({ id, className = "", children }) => (
 
 /* ================= MAIN ================= */
 export default function Portfolio() {
-  const [menu, setMenu] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     injectSEO();
-  }, []);
+    document.body.style.overflow = menuOpen ? "hidden" : "auto";
+  }, [menuOpen]);
 
-  const scrollTo = (id) =>
+  const scrollTo = (id) => {
+    setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div className="relative min-h-screen text-[#E5E7EB] overflow-hidden">
-
       {/* Background */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#0B0F1A] via-[#111827] to-[#1E1B4B]" />
 
@@ -56,6 +62,7 @@ export default function Portfolio() {
         <div className="flex items-center justify-between h-20 px-6 mx-auto max-w-7xl">
           <span className="font-semibold tracking-wide">{PROFILE.name}</span>
 
+          {/* Desktop Nav */}
           <div className="hidden gap-8 text-sm text-gray-400 md:flex">
             {["home", "about", "experience", "projects", "skills", "contact"].map(
               (s) => (
@@ -70,422 +77,348 @@ export default function Portfolio() {
             )}
           </div>
 
-          <button className="md:hidden" onClick={() => setMenu(!menu)}>
-            {menu ? <X /> : <Menu />}
+          {/* Mobile Toggle */}
+          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="md:hidden px-6 py-4 space-y-4 bg-[#0B0F1A] border-t border-white/5">
+            {["home", "about", "experience", "projects", "skills", "contact"].map(
+              (s) => (
+                <button
+                  key={s}
+                  onClick={() => scrollTo(s)}
+                  className="block w-full text-left text-gray-400 hover:text-white"
+                >
+                  {s.toUpperCase()}
+                </button>
+              )
+            )}
+          </div>
+        )}
       </nav>
 
-      {/* HERO */}
-      <section id="home" className="flex items-center min-h-screen pt-28">
-        <div className="grid items-center gap-16 px-6 mx-auto max-w-7xl md:grid-cols-2">
-
-          {/* TEXT */}
-          <div>
-            <motion.span
-              variants={fadeUp}
-              className="inline-block px-4 py-2 text-sm text-gray-400 border rounded-full bg-white/5 border-white/10"
-            >
-              {PROFILE.role}
-            </motion.span>
-
-            <motion.h1
-              variants={fadeUp}
-              className="mt-6 text-5xl font-semibold tracking-tight md:text-6xl"
-            >
-              {PROFILE.name}
-            </motion.h1>
-
-            <motion.p
-              variants={fadeUp}
-              className="max-w-xl mt-6 text-lg leading-relaxed text-gray-400"
-            >
-              Crafting systems that think about everyone.
-              I value clarity and integrity while building secure,
-              scalable backend platforms and AI-assisted systems.
-            </motion.p>
-
-            <motion.div variants={fadeUp} className="flex gap-4 mt-10">
-              <button
-                onClick={() => scrollTo("contact")}
-                className="px-8 py-4 transition bg-indigo-600 rounded-xl hover:bg-indigo-500"
+      <main>
+        {/* HERO */}
+        <section id="home" className="flex items-center min-h-screen pt-28">
+          <div className="grid items-center gap-16 px-6 mx-auto max-w-7xl md:grid-cols-2">
+            <div>
+              <motion.span
+                variants={fadeUp}
+                className="inline-block px-4 py-2 text-sm text-gray-400 border rounded-full bg-white/5 border-white/10"
               >
-                Get in Touch
-              </button>
-              <button
-                onClick={() => scrollTo("projects")}
-                className="px-8 py-4 transition border rounded-xl border-white/10 hover:bg-white/5"
+                {PROFILE.role}
+              </motion.span>
+
+              <motion.h1
+                variants={fadeUp}
+                className="mt-6 text-5xl font-semibold md:text-6xl"
               >
-                View Projects
-              </button>
+                {PROFILE.name}
+              </motion.h1>
+
+              <motion.p
+                variants={fadeUp}
+                className="max-w-xl mt-6 text-lg text-gray-400"
+              >
+                Crafting secure, scalable backend platforms and AI-assisted
+                systems with clarity, integrity and long-term thinking.
+              </motion.p>
+
+              <motion.div variants={fadeUp} className="flex gap-4 mt-10">
+                <button
+                  onClick={() => scrollTo("contact")}
+                  className="px-8 py-4 transition-all bg-indigo-600 rounded-xl hover:bg-indigo-500 hover:cursor-pointer"
+                >
+                  Get in Touch
+                </button>
+                <button
+                  onClick={() => scrollTo("projects")}
+                  className="px-8 py-4 transition-all border rounded-xl border-white/10 hover:bg-white/5 hover:cursor-pointer"
+                >
+                  View Projects
+                </button>
+              </motion.div>
+            </div>
+
+            <motion.div variants={fadeUp} className="flex justify-center">
+              <img
+                src="/src/assets/image.svg"
+                alt="Profile"
+                className="w-72 h-72 md:w-96 md:h-96 opacity-90"
+              />
             </motion.div>
           </div>
+        </section>
 
-          {/* IMAGE */}
-          <motion.div variants={fadeUp} className="flex justify-center">
-            <img
-              src="/src/assets/image.svg"
-              alt="Henry"
-              className="object-contain w-72 h-72 md:w-96 md:h-96 opacity-90"
-            />
-          </motion.div>
-        </div>
-      </section>
+        {/* ABOUT */}
+        <Section id="about">
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 variants={fadeUp} className="mb-6 text-3xl font-semibold">
+              About Me
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-lg text-gray-400">
+              My journey began with curiosity about how things work behind the scenes, from games to complex web applications. I started programming at age of 16, enjoy playing CTFs to understand security deeply, and have base knowledge about low-level systems. I focus on scalable backend systems, secure architecture and AI integrations, prioritizing long-term maintainability over shortcuts.
+            </motion.p>
+          </div>
+        </Section>
 
-      {/* ABOUT */}
-      <Section id="about">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 variants={fadeUp} className="mb-6 text-3xl font-semibold">
-            About Me
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-lg leading-relaxed text-gray-400">
-            My journey began with curiosity about how things work behind the scenes,
-            from games to complex web applications. I started programming at 16,
-            enjoy playing CTFs to understand security deeply, and have grown through
-            a Diploma in Electrical & Electronics Engineering followed by a B.Tech
-            in Information Technology.
-            Today, I focus on backend systems, authorization models, background workers,
-            and AI integrations, prioritizing long-term maintainability over shortcuts.
-          </motion.p>
-        </div>
-      </Section>
-      
-      {/* EXPERIENCE + EDUCATION */}
-      <Section id="experience" className="bg-[#0F172A]">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid gap-16 md:grid-cols-2">
-            {/* EXPERIENCE */}
+        {/* EXPERIENCE + EDUCATION */}
+        <Section id="experience" className="bg-[#0F172A]">
+          <div className="grid max-w-6xl gap-16 mx-auto md:grid-cols-2">
             <div>
               <motion.h3 variants={fadeUp} className="mb-10 text-2xl font-semibold">
                 Experience
               </motion.h3>
-
-              <div className="relative border-l border-white/10 space-y-14">
-                {/* ITEM */}
-                <motion.div variants={fadeUp} className="grid grid-cols-[auto_1fr] gap-x-6">
-                  {/* DOT */}
-                  <div className="relative">
-                    {/* Centered dot container */}
-                    <div className="absolute left-0 -translate-x-1/2 -translate-y-1/2 top-7">
-                      <div
-                        className="relative w-3.5 h-3.5">
-                        {/* OUTWARD PULSE */}
-                        <motion.span
-                          className="absolute inset-0 bg-indigo-400 rounded-full"
-                          style={{ transformOrigin: "50% 50%"}}
-                          initial={false}
-                          animate={{
-                            scale: [1, 1.6],
-                            opacity: [0.4, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            ease: "easeOut",
-                            repeat: Infinity,
-                            repeatDelay: 0.4,
-                          }}
-                        />
-
-                        {/* STATIC DOT */}
-                        <span className="absolute inset-0 z-10 bg-indigo-500 rounded-full" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* CONTENT */}
-                  <div>
-                    <p className="mb-1 text-xs text-gray-500">
-                      2024 - Present
-                    </p>
-                    <h4 className="text-lg font-medium leading-snug">
-                      Freelance Developer - Upwork
-                    </h4>
-                    <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                      Designing backend systems, workflow engines, and APIs for multiple
-                      clients with a focus on security, clarity, and scalability.
-                    </p>
-                  </div>
-                </motion.div>
-
-                {/* ITEM */}
-                <motion.div variants={fadeUp} className="grid grid-cols-[auto_1fr] gap-x-6">
-                  <div className="relative">
-                    {/* Dot wrapper centered on border */}
-                    <div className="absolute -left-[7px] top-6.5">
-                      <div className="relative w-3.5 h-3.5">
-                        {/* OUTWARD PULSE */}
-                        <motion.span
-                          className="absolute inset-0 bg-indigo-400 rounded-full"
-                          initial={false}
-                          animate={{
-                            scale: [1, 1.6],
-                            opacity: [0.4, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            ease: "easeInOut",
-                            repeat: Infinity,
-                            repeatDelay: 0.4,
-                          }}
-                        />
-
-                        {/* STATIC DOT */}
-                        <span className="absolute inset-0 z-10 bg-indigo-500 rounded-full" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="mb-1 text-xs text-gray-500">
-                      Jun 2025 - Jul 2025
-                    </p>
-                    <h4 className="text-lg font-medium leading-snug">
-                      Summer Intern - NIT Tiruchirappalli
-                    </h4>
-                    <p className="mt-2 text-sm leading-relaxed text-gray-400">
-                      Highly Configurable Procurement System and multi-phase approval workflow engines used institution-wide.
-                    </p>
-                  </div>
-                </motion.div>
+              <div className="relative space-y-14">
+                <TimelineLine />
+                <TimelineItem
+                  fadeUp={fadeUp}
+                  color="indigo"
+                  date="2024 - Present"
+                  title="Freelance Developer"
+                  description="Backend systems, workflow engines, secure APIs."
+                />
+                <TimelineItem
+                  fadeUp={fadeUp}
+                  color="indigo"
+                  date="Jun 2025 - Jul 2025"
+                  title="Summer Intern – NIT Trichy"
+                  description="Procurement automation and approval workflows."
+                />
               </div>
             </div>
 
-            {/* EDUCATION */}
             <div>
               <motion.h3 variants={fadeUp} className="mb-10 text-2xl font-semibold">
                 Education
               </motion.h3>
-
-              <div className="relative pl-0.5 border-l border-white/10 space-y-14">
-                {/* ITEM */}
-                <motion.div variants={fadeUp} className="grid grid-cols-[auto_1fr] gap-x-6">
-                  <div className="relative">
-                    {/* Dot wrapper centered on border */}
-                    <div className="absolute -left-[9px] top-6.5">
-                      <div className="relative w-3.5 h-3.5">
-                        {/* OUTWARD PULSE */}
-                        <motion.span
-                          className="absolute inset-0 bg-purple-400 rounded-full"
-                          initial={false}
-                          animate={{
-                            scale: [1, 1.6],
-                            opacity: [0.4, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            ease: "easeInOut",
-                            repeat: Infinity,
-                            repeatDelay: 0.4,
-                          }}
-                        />
-
-                        {/* STATIC DOT */}
-                        <span className="absolute inset-0 z-10 bg-purple-500 rounded-full" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="mb-1 text-xs text-gray-500">
-                      2023 - Present
-                    </p>
-                    <h4 className="text-lg font-medium leading-snug">
-                      B.Tech Information Technology
-                    </h4>
-                    <p className="mt-2 text-sm text-gray-400">
-                      SSN College of Engineering
-                    </p>
-                  </div>
-                </motion.div>
-
-                {/* ITEM */}
-                <motion.div variants={fadeUp} className="grid grid-cols-[auto_1fr] gap-x-6">
-                  <div className="relative">
-                    {/* Dot wrapper centered on border */}
-                    <div className="absolute -left-[9px] top-6.5">
-                      <div className="relative w-3.5 h-3.5">
-                        {/* OUTWARD PULSE */}
-                        <motion.span
-                          className="absolute inset-0 bg-purple-400 rounded-full"
-                          initial={false}
-                          animate={{
-                            scale: [1, 1.6],
-                            opacity: [0.4, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            ease: "easeInOut",
-                            repeat: Infinity,
-                            repeatDelay: 0.4,
-                          }}
-                        />
-
-                        {/* STATIC DOT */}
-                        <span className="absolute inset-0 z-10 bg-purple-500 rounded-full" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="mb-1 text-xs text-gray-500">
-                      2020 - 2023
-                    </p>
-                    <h4 className="text-lg font-medium leading-snug">
-                      Diploma in Electrical & Electronics Engineering
-                    </h4>
-                    <p className="mt-2 text-sm text-gray-400">
-                      Shanmugha Polytechnic College
-                    </p>
-                  </div>
-                </motion.div>
+              <div className="relative space-y-14">
+                <TimelineLine />
+                <TimelineItem
+                  fadeUp={fadeUp}
+                  color="purple"
+                  date="2023 - Present"
+                  title="B.Tech Information Technology"
+                  description="SSN College of Engineering"
+                />
+                <TimelineItem
+                  fadeUp={fadeUp}
+                  color="purple"
+                  date="2020 - 2023"
+                  title="Diploma EEE"
+                  description="Shanmugha Polytechnic College"
+                />
               </div>
             </div>
           </div>
-        </div>
-      </Section>
+        </Section>
 
-      {/* PROJECTS */}
-      <Section id="projects">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
-            Projects
-          </motion.h2>
-
-          <div className="grid gap-8 md:grid-cols-2">
-            {PROJECTS.map((p) => (
-              <motion.div
-                key={p.title}
-                variants={fadeUp}
-                whileHover={{ y: -6 }}
-                className="p-6 border rounded-2xl bg-white/5 border-white/10"
-              >
-                <h3 className="text-xl font-medium">{p.title}</h3>
-                <p className="mt-2 text-gray-400">{p.description}</p>
-
-                <div className="flex gap-4 mt-6">
-                  {p.links.map((l) => (
-                    <a
-                      key={l.url}
-                      href={l.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300"
-                    >
-                      <ExternalLink size={16} /> {l.label}
-                    </a>
+        {/* SKILLS */}
+        <Section id="skills" className="bg-white/5">
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+              Skills
+            </motion.h2>
+            <div className="grid gap-8 md:grid-cols-2">
+              {SKILLS.map((group) => (
+                <motion.div key={group.category} variants={fadeUp}>
+                  <h3 className="mb-4 font-medium">{group.category}</h3>
+                  {group.items.map((s) => (
+                    <div key={s.name} className="mb-3">
+                      <div className="flex justify-between text-sm text-gray-400">
+                        <span>{s.name}</span>
+                        <span>{s.level}%</span>
+                      </div>
+                      <div className="h-2 rounded bg-white/10">
+                        <div
+                          className="h-full rounded bg-gradient-to-r from-indigo-500 to-purple-500"
+                          style={{ width: `${s.level}%` }}
+                        />
+                      </div>
+                    </div>
                   ))}
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
 
-      {/* SKILLS */}
-      <Section id="skills" className="bg-white/5">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
-            Skills
-          </motion.h2>
-
-          <div className="grid gap-8 md:grid-cols-2">
-            {SKILLS.map((group) => (
-              <motion.div key={group.category} variants={fadeUp}>
-                <h3 className="mb-4 font-medium">{group.category}</h3>
-                {group.items.map((s) => (
-                  <div key={s.name} className="mb-3">
-                    <div className="flex justify-between text-sm text-gray-400">
-                      <span>{s.name}</span>
-                      <span>{s.level}%</span>
-                    </div>
-                    <div className="h-2 rounded bg-white/10">
-                      <div
-                        className="h-full rounded bg-gradient-to-r from-indigo-500 to-purple-500"
-                        style={{ width: `${s.level}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            ))}
+        {/* PROJECTS */}
+        <Section id="projects">
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+              Projects
+            </motion.h2>
+            <div className="grid gap-8 md:grid-cols-2">
+              {PROJECTS.map((p) => (
+                <motion.div key={p.title} variants={fadeUp}>
+                  <ProjectCard {...p} />
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
 
-      {/* CONTACT */}
-      <Section id="contact">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.h2 variants={fadeUp} className="mb-4 text-3xl font-semibold">
-            Let's Work Together
-          </motion.h2>
-          <motion.p variants={fadeUp} className="text-gray-400">
-            Open to freelance, consulting and backend-focused roles.
-          </motion.p>
+        {/* CONTACT */}
+        <Section id="contact">
+          <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-14">
+              <motion.h2
+                variants={fadeUp}
+                className="mb-4 text-3xl font-semibold md:text-4xl"
+              >
+                Let’s Work Together
+              </motion.h2>
 
-          <a
-            href={PROFILE.links.upwork}
-            className="inline-block px-10 py-4 mt-10 text-lg transition bg-indigo-600 rounded-xl hover:bg-indigo-500"
-          >
-            Hire Me
-          </a>
-        </div>
-      </Section>
+              <motion.p
+                variants={fadeUp}
+                className="max-w-2xl mx-auto text-lg text-gray-400"
+              >
+                Have a project in mind, need backend expertise, or want to collaborate?
+                <br className="hidden md:block" />
+                Drop a message or hire me directly.
+              </motion.p>
+            </div>
 
-      {/* CONTACT FORM */}
-      <Section id="contact" className="bg-white/5">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.h2 variants={fadeUp} className="mb-4 text-3xl font-semibold">
-            Let's Get in Touch
-          </motion.h2>
-          <form className="mt-8 space-y-4">
-            <div>
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <textarea
-                placeholder="Message"
-                rows={4}
-                className="w-full px-4 py-2 rounded-lg bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-6 py-3 text-lg transition bg-indigo-600 rounded-xl hover:bg-indigo-500"
+            {/* Card */}
+            <motion.div
+              variants={fadeUp}
+              className="grid gap-10 p-8 border rounded-2xl bg-white/5 border-white/10 backdrop-blur
+                 md:grid-cols-[1fr_auto_1fr]"
             >
-              Send Message
-            </button>
-          </form>
-        </div>
-      </Section>
+              {/* LEFT: Upwork */}
+              <div className="flex flex-col justify-between">
+                <div>
+                  <h3 className="flex items-center mb-6 text-xl font-semibold">
+                    <SiUpwork size={28} className="mr-3 text-green-500" />
+                    Hire Me on Upwork
+                  </h3>
 
-      <footer className="py-8 text-center text-gray-500 border-t text-md border-white/5 bg-[#0B0F1A]/70 backdrop-blur">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 gap-8 space-x-8 md:grid-cols-2">
-            <div>
-              <motion.div variants={fadeUp} className="flex justify-center gap-6">
-                <a href={PROFILE.links.github}><SiGithub size={24} />Github</a>
-                <a href={PROFILE.links.linkedin}><SiLinkedin size={24} />LinkedIn</a>
-                <a href={`mailto:${PROFILE.email}`}><SiMaildotru size={24} />Email</a>
-                <a href={PROFILE.links.twitter}><SiMaildotru size={24} />Twitter</a>
-              </motion.div>
-            </div>
-            <div>
-              © {new Date().getFullYear()} All rights reserved.
-            </div>
+                  <ul className="space-y-3 text-gray-400">
+                    <li className="flex items-start gap-3">
+                      <span className="text-indigo-400">•</span>
+                      Production-grade software systems
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-indigo-400">•</span>
+                      Secure backend & authorization models
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-indigo-400">•</span>
+                      AI & system integrations
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="text-indigo-400">•</span>
+                      Full-stack web applications
+                    </li>
+                  </ul>
+                </div>
+
+                <a
+                  href={PROFILE.links.upwork}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 mt-8 text-lg font-medium
+                     transition border rounded-xl border-white/10
+                     hover:bg-white/10 hover:scale-[1.02]"
+                >
+                  Hire Me
+                </a>
+              </div>
+
+              {/* DIVIDER */}
+              <div className="hidden w-px md:block bg-white/10" />
+
+              {/* RIGHT: Contact Form */}
+              <form className="flex flex-col justify-between space-y-5">
+                <h3 className="mb-6 text-xl font-semibold">
+                  Contact Me
+                </h3>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    className="w-full px-4 py-3 text-sm rounded-xl
+                       bg-[#0B0F1A]/60 border border-white/10
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500
+                       transition"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    className="w-full px-4 py-3 text-sm rounded-xl
+                       bg-[#0B0F1A]/60 border border-white/10
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500
+                       transition"
+                  />
+                </div>
+
+                <textarea
+                  rows={5}
+                  placeholder="Tell me about your project..."
+                  className="w-full px-4 py-3 text-sm rounded-xl
+                     bg-[#0B0F1A]/60 border border-white/10
+                     focus:outline-none focus:ring-2 focus:ring-indigo-500
+                     transition"
+                />
+
+                <button
+                  type="submit"
+                  className="w-full px-6 py-3 text-lg font-medium
+                     transition rounded-xl bg-indigo-600
+                     hover:bg-indigo-500 hover:scale-[1.01]"
+                >
+                  Submit
+                </button>
+              </form>
+            </motion.div>
           </div>
+        </Section>
+
+      </main>
+
+      {/* FOOTER */}
+      <footer className="py-8 border-t border-white/5 bg-[#0B0F1A]/70">
+        <div className="mx-auto text-center text-gray-500 max-w-7xl">
+          <div className="flex justify-center gap-6 mb-4">
+            <a
+              href={PROFILE.links.github}
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-white"
+            >
+              <SiGithub size={22} />
+            </a>
+
+            <a
+              href={PROFILE.links.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-white"
+            >
+              <SiLinkedin size={22} />
+            </a>
+
+            <a
+              href={PROFILE.links.twitter}
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-white"
+            >
+              <SiX size={22} />
+            </a>
+          </div>
+
+          © {new Date().getFullYear()} All rights reserved.
         </div>
       </footer>
+
     </div>
   );
 }
