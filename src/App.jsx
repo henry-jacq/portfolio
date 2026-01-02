@@ -58,48 +58,76 @@ export default function Portfolio() {
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#0B0F1A] via-[#111827] to-[#1E1B4B]" />
 
       {/* NAV */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#0B0F1A]/70 backdrop-blur">
+      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#0B0F1A]/75 backdrop-blur-md">
         <div className="flex items-center justify-between h-20 px-6 mx-auto max-w-7xl">
-          <span className="font-semibold tracking-wide">{PROFILE.name}</span>
+
+          {/* Brand */}
+          <div
+            onClick={() => scrollTo("home")}
+            className="flex flex-col cursor-pointer select-none"
+          >
+            <span className="text-lg font-semibold tracking-wide text-white">
+              {PROFILE.name}
+            </span>
+            <span className="text-xs text-gray-500">
+              {PROFILE.role}
+            </span>
+          </div>
 
           {/* Desktop Nav */}
-          <div className="hidden gap-8 text-sm text-gray-400 md:flex">
-            {["home", "about", "experience", "projects", "skills", "contact"].map(
+          <div className="relative items-center hidden gap-8 text-sm md:flex">
+            {["home", "about", "experience", "skills", "projects", "contact"].map(
               (s) => (
                 <button
                   key={s}
                   onClick={() => scrollTo(s)}
-                  className="transition hover:text-white"
+                  className="relative text-gray-400 transition hover:text-white group hover:cursor-pointer"
                 >
                   {s.toUpperCase()}
+
+                  {/* Hover underline */}
+                  <span
+                    className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500
+                         transition-all duration-300 group-hover:w-full"
+                  />
                 </button>
               )
             )}
           </div>
 
           {/* Mobile Toggle */}
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X /> : <Menu />}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="p-2 transition border rounded-lg md:hidden border-white/10 hover:bg-white/10 hover:cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {menuOpen && (
-          <div className="md:hidden px-6 py-4 space-y-4 bg-[#0B0F1A] border-t border-white/5">
-            {["home", "about", "experience", "projects", "skills", "contact"].map(
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="md:hidden px-6 py-6 space-y-4 bg-[#0B0F1A]/95 border-t border-white/5"
+          >
+            {["home", "about", "experience", "skills", "projects", "contact"].map(
               (s) => (
                 <button
                   key={s}
                   onClick={() => scrollTo(s)}
-                  className="block w-full text-left text-gray-400 hover:text-white"
+                  className="block w-full text-left text-gray-400 transition hover:text-white hover:cursor-pointer"
                 >
                   {s.toUpperCase()}
                 </button>
               )
             )}
-          </div>
+          </motion.div>
         )}
       </nav>
+
 
       <main>
         {/* HERO */}
@@ -226,7 +254,7 @@ export default function Portfolio() {
             <div className="grid gap-8 md:grid-cols-2">
               {SKILLS.map((group) => (
                 <motion.div key={group.category} variants={fadeUp}>
-                  <h3 className="mb-4 font-medium">{group.category}</h3>
+                  <h3 className="mb-4 text-lg font-medium">{group.category}</h3>
                   {group.items.map((s) => (
                     <div key={s.name} className="mb-3">
                       <div className="flex justify-between text-sm text-gray-400">
