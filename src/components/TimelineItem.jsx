@@ -25,7 +25,7 @@ export default function TimelineItem({
                     {title}
                 </h4>
                 {description && (
-                    <p className="mt-2 text-sm leading-relaxed text-gray-400">
+                    <p className="mt-2 text-sm leading-relaxed text-gray-400 whitespace-pre-line">
                         {description}
                     </p>
                 )}

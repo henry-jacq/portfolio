@@ -2,7 +2,7 @@
 export const PROJECTS = [
     {
         title: "Digital Outpass System",
-        description: "Institution-scale workflow automation platform.",
+        description: "Built for institutions to manage outpass requests efficiently. Features role-based access control and automated check-in/out workflows.",
         tags: ["Backend", "RBAC", "Workflows"],
         links: [
             { label: "GitHub", url: "https://github.com/henry-jacq/passito" },
@@ -11,7 +11,7 @@ export const PROJECTS = [
     },
     {
         title: "DDoS Detection System",
-        description: "GNN-based traffic anomaly detection with agents.",
+        description: "Traffic anomaly detection powered by Custom Graph Neural Networks pipeline and client agents for web security.",
         tags: ["ML", "Security", "Kafka"],
         links: [
             { label: "GitHub", url: "https://github.com/henry-jacq/ddos-detection" },

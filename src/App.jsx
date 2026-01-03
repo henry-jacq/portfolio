@@ -201,21 +201,40 @@ export default function Portfolio() {
               <motion.h3 variants={fadeUp} className="mb-10 text-2xl font-semibold">
                 Experience
               </motion.h3>
+
               <div className="relative space-y-14">
                 <TimelineLine />
+
                 <TimelineItem
                   fadeUp={fadeUp}
                   color="indigo"
                   date="2024 - Present"
-                  title="Freelance Developer"
-                  description="Backend systems, workflow engines, secure APIs."
+                  title="Freelance Backend Developer (Upwork)"
+                  description="Designing secure, scalable backend systems including REST APIs, workflow engines and authorization logic for multiple client applications."
                 />
+
                 <TimelineItem
                   fadeUp={fadeUp}
                   color="indigo"
                   date="Jun 2025 - Jul 2025"
-                  title="Summer Intern – NIT Trichy"
-                  description="Procurement automation and approval workflows."
+                  title="Summer Intern - NIT Tiruchirappalli"
+                  description="Contributed to procurement automation by building multi-phase approval workflows and dynamic role-based access control for institutional systems."
+                />
+
+                <TimelineItem
+                  fadeUp={fadeUp}
+                  color="indigo"
+                  date="Oct 2023 - Dec 2025"
+                  title="Backend Developer - College Funded Project"
+                  description="Built a Digital Outpass Management System with RBAC-based approvals, parent verification, QR-based entry/exit logging and automated notifications."
+                />
+
+                <TimelineItem
+                  fadeUp={fadeUp}
+                  color="indigo"
+                  date="Jun 2024 - Aug 2024"
+                  title="Backend Developer Intern - DNYX"
+                  description="Developed and maintained backend APIs for a blogging platform, focusing on authentication, CRUD operations and data consistency across services."
                 />
               </div>
             </div>
@@ -224,26 +243,36 @@ export default function Portfolio() {
               <motion.h3 variants={fadeUp} className="mb-10 text-2xl font-semibold">
                 Education
               </motion.h3>
+
               <div className="relative space-y-14">
                 <TimelineLine />
+
                 <TimelineItem
                   fadeUp={fadeUp}
                   color="purple"
                   date="2023 - Present"
                   title="B.Tech Information Technology"
-                  description="SSN College of Engineering"
+                  description={
+                    "SSN College of Engineering\n" +
+                    "Foundations in computer science and information systems."
+                  }
                 />
+
                 <TimelineItem
                   fadeUp={fadeUp}
                   color="purple"
                   date="2020 - 2023"
-                  title="Diploma EEE"
-                  description="Shanmugha Polytechnic College"
+                  title="Diploma in Electrical & Electronics Engineering"
+                  description={
+                    "Shanmugha Polytechnic College\n" +
+                    "Foundations in electronic systems and applications."
+                  }
                 />
               </div>
             </div>
           </div>
         </Section>
+
 
         {/* SKILLS */}
         <Section id="skills" className="bg-white/5">
