@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { SiUpwork, SiGithub, SiLinkedin, SiMaildotru, SiX } from "react-icons/si";
+import { SiUpwork, SiGithub, SiLinkedin, SiMaildotru, SiX, SiMedium } from "react-icons/si";
 
 import TimelineItem from "./components/TimelineItem";
 import TimelineLine from "./components/TimelineLine";
@@ -174,7 +174,7 @@ export default function Portfolio() {
 
             <motion.div variants={fadeUp} className="flex justify-center">
               <img
-                src="/src/assets/image.svg"
+                src="/assets/image.svg"
                 alt="Profile"
                 className="w-72 h-72 md:w-96 md:h-96 opacity-90"
               />
@@ -469,6 +469,15 @@ export default function Portfolio() {
               className="transition hover:text-white"
             >
               <SiX size={22} />
+            </a>
+
+            <a
+              href={PROFILE.links.medium}
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-white"
+            >
+              <SiMedium size={22} />
             </a>
           </div>
 

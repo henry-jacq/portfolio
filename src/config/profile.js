@@ -8,6 +8,7 @@ export const PROFILE = {
         github: import.meta.env.VITE_GITHUB,
         linkedin: import.meta.env.VITE_LINKEDIN,
         twitter: import.meta.env.VITE_TWITTER,
+        medium: import.meta.env.VITE_MEDIUM,
         upwork: import.meta.env.VITE_UPWORK,
     },
 };
