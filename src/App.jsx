@@ -58,21 +58,21 @@ export default function Portfolio() {
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#0B0F1A] via-[#111827] to-[#1E1B4B]" />
 
       {/* NAV */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#0B0F1A]/75 backdrop-blur-md">
+      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#0B0F1A]/75 backdrop-blur-md"
+      >
         <div className="flex items-center justify-between h-20 px-6 mx-auto max-w-7xl">
-
           {/* Brand */}
-          <div
+          <motion.div
             onClick={() => scrollTo("home")}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className="flex flex-col cursor-pointer select-none"
           >
             <span className="text-lg font-semibold tracking-wide text-white">
               {PROFILE.name}
             </span>
-            <span className="text-xs text-gray-500">
-              {PROFILE.role}
-            </span>
-          </div>
+            <span className="text-xs text-gray-500">{PROFILE.role}</span>
+          </motion.div>
 
           {/* Desktop Nav */}
           <div className="relative items-center hidden gap-8 text-sm md:flex">
@@ -84,12 +84,7 @@ export default function Portfolio() {
                   className="relative text-gray-400 transition hover:text-white group hover:cursor-pointer"
                 >
                   {s.toUpperCase()}
-
-                  {/* Hover underline */}
-                  <span
-                    className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500
-                         transition-all duration-300 group-hover:w-full"
-                  />
+                  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-indigo-500 transition-all duration-300 group-hover:w-full" />
                 </button>
               )
             )}
@@ -98,8 +93,7 @@ export default function Portfolio() {
           {/* Mobile Toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 transition border rounded-lg md:hidden border-white/10 hover:bg-white/10 hover:cursor-pointer"
-            aria-label="Toggle menu"
+            className="p-2 transition border rounded-lg md:hidden border-white/10 hover:bg-white/10"
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -108,9 +102,9 @@ export default function Portfolio() {
         {/* Mobile Menu */}
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: -12 }}
             className="md:hidden px-6 py-6 space-y-4 bg-[#0B0F1A]/95 border-t border-white/5"
           >
             {["home", "about", "experience", "skills", "projects", "contact"].map(
@@ -118,7 +112,7 @@ export default function Portfolio() {
                 <button
                   key={s}
                   onClick={() => scrollTo(s)}
-                  className="block w-full text-left text-gray-400 transition hover:text-white hover:cursor-pointer"
+                  className="block w-full text-left text-gray-400 hover:text-white"
                 >
                   {s.toUpperCase()}
                 </button>
@@ -128,12 +122,25 @@ export default function Portfolio() {
         )}
       </nav>
 
-
       <main>
         {/* HERO */}
-        <section id="home" className="flex items-center min-h-screen pt-28">
+        <motion.section
+          id="home"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.2,
+              },
+            },
+          }}
+          initial="hidden"
+          animate="visible"
+          className="flex items-center min-h-screen pt-28"
+        >
           <div className="grid items-center gap-16 px-6 mx-auto max-w-7xl md:grid-cols-2">
-            <div>
+            <motion.div variants={fadeUp}>
               <motion.span
                 variants={fadeUp}
                 className="inline-block px-4 py-2 text-sm text-gray-400 border rounded-full bg-white/5 border-white/10"
@@ -170,9 +177,14 @@ export default function Portfolio() {
                   View Projects
                 </button>
               </motion.div>
-            </div>
+            </motion.div>
 
-            <motion.div variants={fadeUp} className="flex justify-center">
+            <motion.div
+              variants={fadeUp}
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 120 }}
+              className="flex justify-center"
+            >
               <img
                 src="/assets/image.svg"
                 alt="Profile"
@@ -180,7 +192,7 @@ export default function Portfolio() {
               />
             </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* ABOUT */}
         <Section id="about">
@@ -429,7 +441,7 @@ export default function Portfolio() {
                   type="submit"
                   className="w-full px-6 py-3 text-lg font-medium
                      transition rounded-xl bg-indigo-600
-                     hover:bg-indigo-500 hover:scale-[1.01]"
+                     hover:bg-indigo-500 hover:scale-[1.01] hover:cursor-pointer"
                 >
                   Submit
                 </button>
