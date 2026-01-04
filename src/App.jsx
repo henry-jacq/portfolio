@@ -10,6 +10,7 @@ import ProjectCard from "./components/ProjectCard";
 import { PROFILE } from "./config/profile";
 import { PROJECTS } from "./data/projects";
 import { SKILLS } from "./data/skills";
+import { EXPERIENCE } from "./data/experience";
 
 /* ================= SEO ================= */
 const injectSEO = () => {
@@ -209,6 +210,8 @@ export default function Portfolio() {
         {/* EXPERIENCE + EDUCATION */}
         <Section id="experience" className="bg-[#0F172A]">
           <div className="grid max-w-6xl gap-16 mx-auto md:grid-cols-2">
+
+            {/* EXPERIENCE */}
             <div>
               <motion.h3 variants={fadeUp} className="mb-10 text-2xl font-semibold">
                 Experience
@@ -217,40 +220,20 @@ export default function Portfolio() {
               <div className="relative space-y-14">
                 <TimelineLine />
 
-                <TimelineItem
-                  fadeUp={fadeUp}
-                  color="indigo"
-                  date="2024 - Present"
-                  title="Freelance Backend Developer (Upwork)"
-                  description="Designing secure, scalable backend systems including REST APIs, workflow engines and authorization logic for multiple client applications."
-                />
-
-                <TimelineItem
-                  fadeUp={fadeUp}
-                  color="indigo"
-                  date="Jun 2025 - Jul 2025"
-                  title="Summer Intern - NIT Tiruchirappalli"
-                  description="Contributed to procurement automation by building multi-phase approval workflows and dynamic role-based access control for institutional systems."
-                />
-
-                <TimelineItem
-                  fadeUp={fadeUp}
-                  color="indigo"
-                  date="Oct 2023 - Dec 2025"
-                  title="Backend Developer - College Funded Project"
-                  description="Built a Digital Outpass Management System with RBAC-based approvals, parent verification, QR-based entry/exit logging and automated notifications."
-                />
-
-                <TimelineItem
-                  fadeUp={fadeUp}
-                  color="indigo"
-                  date="Jun 2024 - Aug 2024"
-                  title="Backend Developer Intern - DNYX"
-                  description="Developed and maintained backend APIs for a blogging platform, focusing on authentication, CRUD operations and data consistency across services."
-                />
+                {EXPERIENCE.work.map((exp, index) => (
+                  <TimelineItem
+                    key={index}
+                    fadeUp={fadeUp}
+                    color="indigo"
+                    date={exp.duration}
+                    title={`${exp.position} (${exp.company})`}
+                    description={exp.description}
+                  />
+                ))}
               </div>
             </div>
 
+            {/* EDUCATION */}
             <div>
               <motion.h3 variants={fadeUp} className="mb-10 text-2xl font-semibold">
                 Education
@@ -259,76 +242,19 @@ export default function Portfolio() {
               <div className="relative space-y-14">
                 <TimelineLine />
 
-                <TimelineItem
-                  fadeUp={fadeUp}
-                  color="purple"
-                  date="2023 - Present"
-                  title="B.Tech Information Technology"
-                  description={
-                    "SSN College of Engineering\n" +
-                    "Foundations in computer science and information systems."
-                  }
-                />
-
-                <TimelineItem
-                  fadeUp={fadeUp}
-                  color="purple"
-                  date="2020 - 2023"
-                  title="Diploma in Electrical & Electronics Engineering"
-                  description={
-                    "Shanmugha Polytechnic College\n" +
-                    "Foundations in electronic systems and applications."
-                  }
-                />
+                {EXPERIENCE.education.map((edu, index) => (
+                  <TimelineItem
+                    key={index}
+                    fadeUp={fadeUp}
+                    color="purple"
+                    date={edu.duration}
+                    title={edu.degree}
+                    description={`${edu.institution}\n${edu.description}`}
+                  />
+                ))}
               </div>
             </div>
-          </div>
-        </Section>
 
-
-        {/* SKILLS */}
-        <Section id="skills" className="bg-white/5">
-          <div className="max-w-6xl mx-auto">
-            <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
-              Skills
-            </motion.h2>
-            <div className="grid gap-8 md:grid-cols-2">
-              {SKILLS.map((group) => (
-                <motion.div key={group.category} variants={fadeUp}>
-                  <h3 className="mb-4 text-lg font-medium">{group.category}</h3>
-                  {group.items.map((s) => (
-                    <div key={s.name} className="mb-3">
-                      <div className="flex justify-between text-sm text-gray-400">
-                        <span>{s.name}</span>
-                        <span>{s.level}%</span>
-                      </div>
-                      <div className="h-2 rounded bg-white/10">
-                        <div
-                          className="h-full rounded bg-gradient-to-r from-indigo-500 to-purple-500"
-                          style={{ width: `${s.level}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </Section>
-
-        {/* PROJECTS */}
-        <Section id="projects">
-          <div className="max-w-6xl mx-auto">
-            <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
-              Projects
-            </motion.h2>
-            <div className="grid gap-8 md:grid-cols-2">
-              {PROJECTS.map((p) => (
-                <motion.div key={p.title} variants={fadeUp}>
-                  <ProjectCard {...p} />
-                </motion.div>
-              ))}
-            </div>
           </div>
         </Section>
 
