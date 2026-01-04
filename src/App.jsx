@@ -8,9 +8,9 @@ import TimelineLine from "./components/TimelineLine";
 import ProjectCard from "./components/ProjectCard";
 
 import { PROFILE } from "./config/profile";
-import { PROJECTS } from "./data/projects";
-import { SKILLS } from "./data/skills";
-import { EXPERIENCE } from "./data/experience";
+import { PROJECTS } from "./config/projects";
+import { SKILLS } from "./config/skills";
+import { EXPERIENCE } from "./config/experience";
 
 /* ================= SEO ================= */
 const injectSEO = () => {
@@ -258,7 +258,7 @@ export default function Portfolio() {
         </Section>
 
         {/* SKILLS */}
-        <Section id="skills">
+        <Section id="skills" className="bg-[#0F172A]">
           <div className="max-w-6xl mx-auto">
             <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
               Skills
@@ -281,6 +281,22 @@ export default function Portfolio() {
                       </div>
                     </div>
                   ))}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        {/* PROJECTS */}
+        <Section id="projects">
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+              Projects
+            </motion.h2>
+            <div className="grid gap-8 md:grid-cols-2">
+              {PROJECTS.map((p) => (
+                <motion.div key={p.title} variants={fadeUp}>
+                  <ProjectCard {...p} />
                 </motion.div>
               ))}
             </div>
