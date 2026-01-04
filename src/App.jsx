@@ -254,7 +254,36 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
+          </div>
+        </Section>
 
+        {/* SKILLS */}
+        <Section id="skills">
+          <div className="max-w-6xl mx-auto">
+            <motion.h2 variants={fadeUp} className="mb-10 text-3xl font-semibold">
+              Skills
+            </motion.h2>
+            <div className="grid gap-8 md:grid-cols-2">
+              {SKILLS.map((group) => (
+                <motion.div key={group.category} variants={fadeUp}>
+                  <h3 className="mb-4 text-lg font-medium">{group.category}</h3>
+                  {group.items.map((s) => (
+                    <div key={s.name} className="mb-3">
+                      <div className="flex justify-between text-sm text-gray-400">
+                        <span>{s.name}</span>
+                        <span>{s.level}%</span>
+                      </div>
+                      <div className="h-2 rounded bg-white/10">
+                        <div
+                          className="h-full rounded bg-gradient-to-r from-indigo-500 to-purple-500"
+                          style={{ width: `${s.level}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </Section>
 
