@@ -4,6 +4,7 @@ export const PROFILE = {
     role: import.meta.env.VITE_ROLE,
     email: import.meta.env.VITE_EMAIL,
     location: import.meta.env.VITE_LOCATION,
+    formspreeKey: import.meta.env.VITE_FORMSPREE_KEY,
     links: {
         github: import.meta.env.VITE_GITHUB,
         linkedin: import.meta.env.VITE_LINKEDIN,

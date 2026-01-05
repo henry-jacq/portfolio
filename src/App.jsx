@@ -43,6 +43,37 @@ const Section = ({ id, className = "", children }) => (
 export default function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "sending") return;
+
+    setStatus("sending");
+    try {
+      const res = await fetch(`https://formspree.io/f/${PROFILE.formspreeKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) throw new Error();
+      setStatus("success");
+      setForm({ name: "", email: "", message: "" });
+    } catch {
+      setStatus("error");
+    }
+  };
+
   useEffect(() => {
     injectSEO();
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
@@ -371,35 +402,41 @@ export default function Portfolio() {
                 </a>
               </div>
 
-              {/* DIVIDER */}
               <div className="hidden w-px md:block bg-white/10" />
 
-              {/* RIGHT: Contact Form */}
-              <form className="flex flex-col justify-between space-y-5">
-                <h3 className="mb-6 text-xl font-semibold">
-                  Contact Me
-                </h3>
+              {/* ===== Form: feature wired, UI unchanged ===== */}
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col justify-between space-y-5"
+              >
+                <h3 className="mb-6 text-xl font-semibold">Contact Me</h3>
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <input
-                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
                     placeholder="Your name"
                     className="w-full px-4 py-3 text-sm rounded-xl
-                       bg-[#0B0F1A]/60 border border-white/10
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500
-                       transition"
+                      bg-[#0B0F1A]/60 border border-white/10
+                      focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                   <input
+                    name="email"
                     type="email"
+                    value={form.email}
+                    onChange={handleChange}
                     placeholder="Your email"
                     className="w-full px-4 py-3 text-sm rounded-xl
-                       bg-[#0B0F1A]/60 border border-white/10
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500
-                       transition"
+                      bg-[#0B0F1A]/60 border border-white/10
+                      focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
 
                 <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
                   rows={5}
                   placeholder="Tell me about your project..."
                   className="w-full px-4 py-3 text-sm rounded-xl
@@ -410,12 +447,18 @@ export default function Portfolio() {
 
                 <button
                   type="submit"
-                  className="w-full px-6 py-3 text-lg font-medium
-                     transition rounded-xl bg-indigo-600
-                     hover:bg-indigo-500 hover:scale-[1.01] hover:cursor-pointer"
+                  disabled={status === "sending"}
+                  className="w-full px-6 py-3 text-lg font-medium transition bg-indigo-600 rounded-xl hover:bg-indigo-500 disabled:opacity-50 hover:cursor-pointer"
                 >
-                  Submit
+                  {status === "sending" ? "Sending..." : "Submit"}
                 </button>
+
+                {status === "success" && (
+                  <p className="text-sm text-green-400">Message sent successfully.</p>
+                )}
+                {status === "error" && (
+                  <p className="text-sm text-red-400">Something went wrong.</p>
+                )}
               </form>
             </motion.div>
           </div>
