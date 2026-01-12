@@ -11,10 +11,10 @@ export const PROJECTS = [
     },
     {
         title: "DDoS Detection System",
-        description: "Traffic anomaly detection powered by Custom Graph Neural Networks pipeline and client agents for web security.",
+        description: "Network Traffic anomaly detection using custom architecture including Graph Neural Networks pipeline and client agents for web security.",
         tags: ["ML", "Security", "Kafka"],
         links: [
-            { label: "GitHub", url: "https://github.com/henry-jacq/ddos-detection" },
+            { label: "GitHub", url: "https://github.com/henry-jacq/threatwatch-backend" },
         ],
         imageUrl: "https://user-images.githubusercontent.com/78417411/204220907-67fb2338-1023-4404-8320-b7c2967bd0a3.png",
     },
